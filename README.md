@@ -52,6 +52,7 @@ optional arguments:
 
 
 # Example
+The following modified playlist 5No such that it has all tracks that are in **both** playlist 5UY **and** 4EB.
 ```
 user@computer:~$ ./spotify-playlist-set-theory.py 010 jelchison 5UYwlMnNTLqRuJ0CxUutOD 4EBTp2BrFqkv2123Zzbfsj 5NoLdcuoI3xdV52jqna4jY
 After pressing Enter, a new browser tab will launch.  Authorize the Spotify application.  After it

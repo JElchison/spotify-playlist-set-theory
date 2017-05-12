@@ -9,6 +9,7 @@ import requests
 import re
 
 
+# client ID is public
 CLIENT_ID = 'bd9297adefb44ddfac570814af8aaa05'
 access_token = None
 username = None
@@ -16,6 +17,7 @@ username = None
 
 def get_playlist_tracks(playlist_id):
     headers = {'Authorization': 'Bearer ' + access_token}
+    # only get the fields we need
     payload = {'fields': 'items(track(id)),next'}
 
     print "Getting tracks listing for playlist", playlist_id, "..."
@@ -28,6 +30,7 @@ def get_playlist_tracks(playlist_id):
     track_list = [item['track']['id'] for item in json['items']]
     next = json['next']
 
+    # loop until we've retrieved all tracks
     while next and next != 'null':
         r = requests.get(next, headers=headers)
         print "get_playlist_tracks: HTTP", r.status_code
@@ -43,31 +46,36 @@ def get_playlist_tracks(playlist_id):
 
 
 def perform_set_operation_on_playlists(operation, playlist_a, playlist_b):
+    # can we use a shortcut?
     if operation == '000':
         return []
-    elif operation == '011':
-        return playlist_b
-    elif operation == '110':
-        return playlist_a
 
     if type(playlist_a) is not list:
+        # input param came in as playlist ID
         playlist_a = set(get_playlist_tracks(playlist_a))
     else:
+        # input param came in as track listing
         playlist_a = set(playlist_a)
 
     if type(playlist_b) is not list:
+        # input param came in as playlist ID
         playlist_b = set(get_playlist_tracks(playlist_b))
     else:
+        # input param came in as track listing
         playlist_b = set(playlist_b)
 
     if operation == '001':
         return list(playlist_b - playlist_a)
     elif operation == '010':
         return list(playlist_a & playlist_b)
+    elif operation == '011':
+        return list(playlist_b)
     elif operation == '100':
         return list(playlist_a - playlist_b)
     elif operation == '101':
         return list(playlist_a ^ playlist_b)
+    elif operation == '110':
+        return list(playlist_a)
     elif operation == '111':
         return list(playlist_a | playlist_b)
     else:
@@ -78,6 +86,7 @@ def add_tracks_to_playlist(track_list, output_playlist_id):
     headers = {'Authorization': 'Bearer ' + access_token}
 
     num_tracks = len(track_list)
+    # limit imposed by API
     item_limit = 100
 
     while num_tracks > 0:
@@ -94,6 +103,7 @@ def remove_tracks_from_playlist(track_list, output_playlist_id):
     headers = {'Authorization': 'Bearer ' + access_token}
 
     num_tracks = len(track_list)
+    # limit imposed by API
     item_limit = 100
 
     while num_tracks > 0:
@@ -130,6 +140,7 @@ if __name__ == "__main__":
 
     username = args.username
 
+    # accept keywords for well-known operations
     if args.operation == 'intersection':
         args.operation = '010'
     elif args.operation == 'symmetric_difference':
@@ -137,6 +148,7 @@ if __name__ == "__main__":
     elif args.operation == 'union':
         args.operation = '111'
 
+    # all operations must map to 3-digit binary string
     if not re.match(r'[01]{3}', args.operation):
         raise Exception("Invalid operation")
 

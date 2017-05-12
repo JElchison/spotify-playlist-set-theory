@@ -115,7 +115,7 @@ Success
 
 
 # Prerequisites
-* Python
+* Python 2.7
 * requests
 
 

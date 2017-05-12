@@ -4,7 +4,7 @@ Applies set theory to tracks in Spotify playlists.  Enables populating a destina
 
 # Operation
 Inputs:
-* ID of two Spotify playlists
+* ID of two Spotify playlists.  These playlists are not modified.
 * Spotify username containing those playlists
 * Operation
     * 000 = null set
@@ -17,7 +17,7 @@ Inputs:
     * 111 = union
 
 Output:
-* ID of destination Spotify playlist
+* ID of destination Spotify playlist.  This playlist is modified to match the result of the set theory operation.  Playlist must already exist (but allowed to be empty).
 
 
 # Features
@@ -99,12 +99,13 @@ get_playlist_tracks: HTTP 200
 Operation 010 yielded 405 results
 Getting tracks listing for playlist 5NoLdcuoI3xdV52jqna4jY ...
 get_playlist_tracks: HTTP 200
-get_playlist_tracks: HTTP 200
-get_playlist_tracks: HTTP 200
-get_playlist_tracks: HTTP 200
-get_playlist_tracks: HTTP 200
-405 tracks in playlist 5NoLdcuoI3xdV52jqna4jY
-0 tracks to add to playlist 5NoLdcuoI3xdV52jqna4jY ...
+3 tracks in playlist 5NoLdcuoI3xdV52jqna4jY
+402 tracks to add to playlist 5NoLdcuoI3xdV52jqna4jY ...
+add_tracks_to_playlist: HTTP 201
+add_tracks_to_playlist: HTTP 201
+add_tracks_to_playlist: HTTP 201
+add_tracks_to_playlist: HTTP 201
+add_tracks_to_playlist: HTTP 201
 0 tracks to remove from playlist 5NoLdcuoI3xdV52jqna4jY ...
 Success
 ```

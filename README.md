@@ -9,7 +9,7 @@ Inputs:
 * Operation
     * 000 = null set
     * 001 = B - A
-    * 010 = intersection = Intersect
+    * 010 = intersection
     * 011 = B
     * 100 = A - B
     * 101 = symmetric_difference

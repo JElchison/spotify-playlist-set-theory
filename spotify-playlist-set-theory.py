@@ -132,9 +132,9 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     try:
-        access_token = os.environ['ACCESS_TOKEN']
+        access_token = os.environ['access_token']
     except KeyError:
-        raw_input('After pressing Enter, a new browser tab will launch.  Authorize the Spotify application.  After it redirects you to a nonexistent webpage, copy the "access_token" query parameter in the URL and set it as the ACCESS_TOKEN in your Bash environment before re-running this script.')
+        raw_input('After pressing Enter, a new browser tab will launch.  Authorize the Spotify application.  After it redirects you to a nonexistent webpage, copy the "access_token" query parameter in the URL and set it as the "access_token" in your Bash environment before re-running this script.')
         webbrowser.open_new_tab('https://accounts.spotify.com/authorize?client_id=%s&response_type=token&redirect_uri=http://aaaaaaaaaaaaaaaaaaaaaaaaaaaa.com/&scope=playlist-modify-public playlist-modify-private' % CLIENT_ID)
         sys.exit(1)
 

@@ -57,9 +57,9 @@ The following modified playlist `5No` such that it has all tracks that are in **
 user@computer:~$ ./spotify-playlist-set-theory.py 010 jelchison 5UYwlMnNTLqRuJ0CxUutOD 4EBTp2BrFqkv2123Zzbfsj 5NoLdcuoI3xdV52jqna4jY
 After pressing Enter, a new browser tab will launch.  Authorize the Spotify application.  After it
 redirects you to a nonexistent webpage, copy the "access_token" query parameter in the URL and set it
-as the ACCESS_TOKEN in your Bash environment before re-running this script.
+as the "access_token" in your Bash environment before re-running this script.
 
-user@computer:~$ ACCESS_TOKEN=BQCO...<truncated>...soXw ./spotify-playlist-set-theory.py intersection jelchison 5UYwlMnNTLqRuJ0CxUutOD 4EBTp2BrFqkv2123Zzbfsj 5NoLdcuoI3xdV52jqna4jY
+user@computer:~$ access_token=BQCO...<truncated>...soXw ./spotify-playlist-set-theory.py intersection jelchison 5UYwlMnNTLqRuJ0CxUutOD 4EBTp2BrFqkv2123Zzbfsj 5NoLdcuoI3xdV52jqna4jY
 Getting tracks listing for playlist 5UYwlMnNTLqRuJ0CxUutOD ...
 get_playlist_tracks: HTTP 200
 get_playlist_tracks: HTTP 200

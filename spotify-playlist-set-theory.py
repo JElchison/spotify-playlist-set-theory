@@ -90,7 +90,7 @@ def add_tracks_to_playlist(track_list, output_playlist_id):
     item_limit = 100
 
     while num_tracks > 0:
-        payload = {'uris': ["spotify:track:%s" % track_id for track_id in track_list[-num_tracks:][:item_limit]]}
+        payload = {'uris': ["spotify:track:%s" % track_id for track_id in track_list[-num_tracks:][:item_limit] if track_id != None]}
 
         r = requests.post('https://api.spotify.com/v1/users/%s/playlists/%s/tracks' % (username, output_playlist_id), headers=headers, json=payload)
         print "add_tracks_to_playlist: HTTP", r.status_code

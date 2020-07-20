@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 
 import argparse
 import sys
@@ -20,10 +20,10 @@ def get_playlist_tracks(playlist_id):
     # only get the fields we need
     payload = {'fields': 'items(track(id)),next'}
 
-    print "Getting tracks listing for playlist", playlist_id, "..."
+    print("Getting tracks listing for playlist", playlist_id, "...")
 
     r = requests.get('https://api.spotify.com/v1/users/%s/playlists/%s/tracks' % (username, playlist_id), headers=headers, params=payload)
-    print "get_playlist_tracks: HTTP", r.status_code
+    print("get_playlist_tracks: HTTP", r.status_code)
     r.raise_for_status()
 
     json = r.json()
@@ -33,14 +33,14 @@ def get_playlist_tracks(playlist_id):
     # loop until we've retrieved all tracks
     while next and next != 'null':
         r = requests.get(next, headers=headers)
-        print "get_playlist_tracks: HTTP", r.status_code
+        print("get_playlist_tracks: HTTP", r.status_code)
         r.raise_for_status()
 
         json = r.json()
         track_list.extend([item['track']['id'] for item in json['items']])
         next = json['next']
 
-    print "%d tracks in playlist" % len(track_list), playlist_id
+    print("%d tracks in playlist" % len(track_list), playlist_id)
 
     return track_list
 
@@ -93,7 +93,7 @@ def add_tracks_to_playlist(track_list, output_playlist_id):
         payload = {'uris': ["spotify:track:%s" % track_id for track_id in track_list[-num_tracks:][:item_limit] if track_id is not None]}
 
         r = requests.post('https://api.spotify.com/v1/users/%s/playlists/%s/tracks' % (username, output_playlist_id), headers=headers, json=payload)
-        print "add_tracks_to_playlist: HTTP", r.status_code
+        print("add_tracks_to_playlist: HTTP", r.status_code)
         r.raise_for_status()
 
         num_tracks -= item_limit
@@ -110,7 +110,7 @@ def remove_tracks_from_playlist(track_list, output_playlist_id):
         payload = {'tracks': [{"uri": "spotify:track:%s" % track_id} for track_id in track_list[-num_tracks:][:item_limit]]}
 
         r = requests.delete('https://api.spotify.com/v1/users/%s/playlists/%s/tracks' % (username, output_playlist_id), headers=headers, json=payload)
-        print "remove_tracks_from_playlist: HTTP", r.status_code
+        print("remove_tracks_from_playlist: HTTP", r.status_code)
         r.raise_for_status()
 
         num_tracks -= item_limit
@@ -134,7 +134,7 @@ if __name__ == "__main__":
     try:
         access_token = os.environ['access_token']
     except KeyError:
-        raw_input('After pressing Enter, a new browser tab will launch.  Authorize the Spotify application.  After it redirects you to a nonexistent webpage, copy the "access_token" query parameter in the URL and set it as the "access_token" in your Bash environment before re-running this script.')
+        input('After pressing Enter, a new browser tab will launch.  Authorize the Spotify application.  After it redirects you to a nonexistent webpage, copy the "access_token" query parameter in the URL and set it as the "access_token" in your Bash environment before re-running this script.')
         webbrowser.open_new_tab('https://accounts.spotify.com/authorize?client_id=%s&response_type=token&redirect_uri=http://tk5Vc6D835LtapxZIRMtfdWeWrJj5h2B-spotify-playlist-set-theory.com/&scope=playlist-modify-public playlist-modify-private' % CLIENT_ID)
         sys.exit(1)
 
@@ -153,16 +153,16 @@ if __name__ == "__main__":
         raise Exception("Invalid operation")
 
     result_tracks = perform_set_operation_on_playlists(args.operation, args.input_playlist_id[0], args.input_playlist_id[1])
-    print "Operation %s yielded %d results" % (args.operation, len(result_tracks))
+    print("Operation %s yielded %d results" % (args.operation, len(result_tracks)))
 
     output_playlist_tracks = get_playlist_tracks(args.output_playlist_id)
 
     tracks_to_add = perform_set_operation_on_playlists('100', result_tracks, output_playlist_tracks)
-    print "%d tracks to add to playlist" % len(tracks_to_add), args.output_playlist_id, "..."
+    print("%d tracks to add to playlist" % len(tracks_to_add), args.output_playlist_id, "...")
     add_tracks_to_playlist(tracks_to_add, args.output_playlist_id)
 
     tracks_to_remove = perform_set_operation_on_playlists('001', result_tracks, output_playlist_tracks)
-    print "%d tracks to remove from playlist" % len(tracks_to_remove), args.output_playlist_id, "..."
+    print("%d tracks to remove from playlist" % len(tracks_to_remove), args.output_playlist_id, "...")
     remove_tracks_from_playlist(tracks_to_remove, args.output_playlist_id)
 
-    print "Success"
+    print("Success")

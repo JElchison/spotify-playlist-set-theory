@@ -33,7 +33,7 @@ def get_playlist_tracks(playlist_id):
     # loop until we've retrieved all tracks
     while next and next != 'null':
         r = requests.get(next, headers=headers)
-        print("get_playlist_tracks: HTTP", r.status_code)
+        print('.', end='', flush=True)
         r.raise_for_status()
 
         json = r.json()
